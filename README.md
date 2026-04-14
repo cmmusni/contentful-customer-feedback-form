@@ -46,6 +46,8 @@ src/
 
 **Alternating card layout.** Feedback cards alternate between `flex-start` and `flex-end` alignment using `:nth-child(odd/even)`. Each card has a `::after` pseudo-element clipped into a triangle to create a speech-bubble tail, with the tail direction flipped for even cards.
 
+**Expandable messages.** Long feedback messages are clamped to a `max-height` with a CSS `mask-image` fade. A `useEffect` compares the element's `scrollHeight` against the threshold on mount — if it overflows, a "See more" toggle appears. Clicking it removes the clamp class; "See less" re-applies it. This avoids CSS-only `-webkit-line-clamp` which doesn't support a fade gradient and has no toggle mechanism.
+
 **Responsive layout.** Two breakpoints at 1024px and 640px. The form section and feedback list switch from side-by-side to stacked layouts on smaller viewports. Fixed widths become fluid, sticky positioning is disabled on mobile, and typography scales down.
 
 **Typography.** The app uses [Public Sans](https://fonts.google.com/specimen/Public+Sans) (weights 400, 500, 600, 700) loaded via Google Fonts, matching the Figma design specs.
