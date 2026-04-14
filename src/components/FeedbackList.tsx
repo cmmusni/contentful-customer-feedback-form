@@ -1,3 +1,4 @@
+import { useRef, useState, useEffect } from 'react';
 import type { FeedbackEntry } from '../types';
 import quoteIcon from '../assets/quote.svg';
 import './FeedbackList.css';
@@ -28,6 +29,46 @@ function Stars({ count }: { count: number }) {
   );
 }
 
+const MESSAGE_MAX_HEIGHT = 100;
+
+function FeedbackCard({ entry }: { entry: FeedbackEntry }) {
+  const messageRef = useRef<HTMLParagraphElement>(null);
+  const [clamped, setClamped] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const el = messageRef.current;
+    if (el && el.scrollHeight > MESSAGE_MAX_HEIGHT) {
+      setClamped(true);
+    }
+  }, [entry.message]);
+
+  return (
+    <article className="feedback-card">
+      <div className="feedback-card__header">
+        <img src={quoteIcon} alt="" className="feedback-card__quote" />
+        <Stars count={entry.rating} />
+      </div>
+      <p
+        ref={messageRef}
+        className={`feedback-card__message ${!expanded && clamped ? 'feedback-card__message--clamped' : ''}`}
+      >
+        {entry.message}
+      </p>
+      {clamped && (
+        <button
+          type="button"
+          className="feedback-card__toggle"
+          onClick={() => setExpanded((prev) => !prev)}
+        >
+          {expanded ? 'See less' : 'See more'}
+        </button>
+      )}
+      <span className="feedback-card__name">{entry.name}</span>
+    </article>
+  );
+}
+
 export default function FeedbackList({ entries }: FeedbackListProps) {
   if (entries.length === 0) return null;
 
@@ -36,14 +77,7 @@ export default function FeedbackList({ entries }: FeedbackListProps) {
       <div className="feedback-list-section__content">
         <div className="feedback-list">
           {entries.map((entry, index) => (
-            <article key={index} className="feedback-card">
-              <div className="feedback-card__header">
-                <img src={quoteIcon} alt="" className="feedback-card__quote" />
-                <Stars count={entry.rating} />
-              </div>
-              <p className="feedback-card__message">{entry.message}</p>
-              <span className="feedback-card__name">{entry.name}</span>
-            </article>
+            <FeedbackCard key={index} entry={entry} />
           ))}
         </div>
         <div className="feedback-list-section__text">

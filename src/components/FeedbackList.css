@@ -116,6 +116,31 @@
   font-size: 0.88rem;
   line-height: 1.6;
   margin: 0 0 10px;
+  overflow: hidden;
+}
+
+.feedback-card__message--clamped {
+  max-height: 100px;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+.feedback-card__toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: #EAB551;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 0 0;
+  margin: 0 0 6px;
+  letter-spacing: 0.02em;
+}
+
+.feedback-card__toggle:hover {
+  color: #f0c464;
 }
 
 .feedback-card__name {
